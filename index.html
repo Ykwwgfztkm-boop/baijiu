@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>本土白酒分类规范化与国际对接 课题方向分析</title>
+<!-- 交作业用的页面，不需要被搜索引擎收录 -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="白酒分类规范化与国际对接的课题方向分析：难点拆解、四个可落地方向与执行顺序。">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f2f2ef">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0f11">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f2f2ef'/%3E%3Crect x='6' y='8' width='20' height='2' fill='%23121316'/%3E%3Crect x='6' y='15' width='13' height='2' fill='%23121316'/%3E%3Crect x='6' y='22' width='17' height='2' fill='%231f3bd9'/%3E%3C/svg%3E">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   设计判断（写给以后要改这个文件的人）
+
+   DESIGN READ
+   面向一位大一学生和他导师的研究方向分析。语言取「标准文本 / 分类
+   图鉴」的精密感：纸白墨黑，单一钴蓝强调色，版面靠网格和发丝线
+   组织，不靠色块。
+
+   DIALS  7 / 5 / 3
+   DESIGN_VARIANCE 7  长文编辑排版，非对称：正文偏左，右侧留白承担批注感
+   MOTION_INTENSITY 5 克制。这是要读的文档，动效只服务层级和节奏
+   VISUAL_DENSITY 3   信息密度低，留白多
+
+   刻意避开的
+     - AI 紫，以及「中国传统文化」题材最容易掉进的米色+黄铜+勃艮第红
+     - 风景照片。严肃分析用排版和图表做视觉，配图只会稀释可信度
+     - 编号式小装饰标签、滚动提示、纯黑、霓虹外发光
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --paper:   #f2f2ef;
+  --paper-2: #e8e8e3;
+  --ink:     #121316;
+  --ink-2:   #4a4d55;
+  /* 第三级灰。原来是 #8b8e96，对纸底的对比度只有 2.92，
+     而这些小号等宽标签全是 11–13px 的小字，必须过 4.5:1。
+     压到 #63666e 之后是 5.1:1，视觉上仍然是"最轻的一层"，
+     层级靠字号、字距和字体族区分，不靠把字做淡到看不清。 */
+  --ink-3:   #63666e;
+  --line:    rgba(18,19,22,.13);
+  --line-2:  rgba(18,19,22,.07);
+  --accent:  #1f3bd9;
+  --accent-soft: rgba(31,59,217,.09);
+
+  /* 全站一个圆角尺度：2px。标准文本不该有圆角卡片。 */
+  --r: 2px;
+
+  --sans: "PingFang SC", -apple-system, BlinkMacSystemFont, "Hiragino Sans GB",
+          "Microsoft YaHei", sans-serif;
+  --serif: "Songti SC", "Songti TC", "Source Han Serif SC", "Noto Serif SC",
+           "SimSun", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, monospace;
+
+  --ease: cubic-bezier(.22,1,.36,1);
+  --gutter: clamp(20px, 5vw, 64px);
+  --rail: 84px;
+  /* 内容列左侧留给「脊线 + 条款编号」的宽度 */
+  --spine: clamp(38px, 4.6vw, 66px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 999;
+  background: var(--ink); color: var(--paper);
+  padding: 12px 20px; font-size: .9rem; text-decoration: none;
+}
+.skip:focus { left: 16px; top: 16px; }
+
+a { color: inherit; }
+
+/* ══════════════════════════════════════════════════════════════════
+   窄屏顶栏 + 目录
+   桌面端靠左侧导航轨跳章节；窄屏导航轨是隐藏的，如果不补一条，
+   手机读者就没有任何方式在章节之间跳转 —— 这是功能缺失，不是样式问题。
+   ══════════════════════════════════════════════════════════════════ */
+.mbar, .mpanel { display: none; }
+
+@media (max-width: 1079px) {
+  .mbar {
+    display: flex; align-items: center; justify-content: space-between;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+    padding: 9px var(--gutter);
+    padding-top: calc(9px + env(safe-area-inset-top, 0px));
+    background: rgba(242,242,239,.95);
+    border-bottom: 1px solid var(--line-2);
+    -webkit-backdrop-filter: saturate(160%) blur(8px);
+    backdrop-filter: saturate(160%) blur(8px);
+  }
+  .mbar .mt {
+    font-size: .9rem; font-weight: 500; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+  }
+  .mbar .mtoc {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .1em;
+    color: var(--ink-2); background: transparent;
+    border: 1px solid var(--line); border-radius: var(--r);
+    padding: 0 14px; min-height: 40px; cursor: pointer;
+  }
+  .mbar .mtoc:active { background: var(--paper-2); }
+
+  .mpanel {
+    display: grid;
+    position: fixed; left: 0; right: 0; z-index: 110;
+    top: calc(58px + env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - 58px);
+    overflow-y: auto; overscroll-behavior: contain;
+    padding: 4px var(--gutter) 18px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line-2);
+    /* 浮层边缘如果不做个交代，正好切在正文中间会被读成"排版坏了"。
+       给个柔和的投影，读起来才是"一块浮在上面的面板"。 */
+    box-shadow: 0 16px 32px rgba(18,19,22,.11);
+    visibility: hidden; opacity: 0; transform: translateY(-8px);
+    transition: opacity .26s var(--ease), transform .26s var(--ease), visibility .26s;
+  }
+  .mpanel.open { visibility: visible; opacity: 1; transform: none; }
+  .mpanel a {
+    display: grid; grid-template-columns: 1.8rem 1fr; gap: 12px;
+    padding: 11px 0; border-top: 1px solid var(--line-2);
+    text-decoration: none; color: var(--ink); font-size: .96rem;
+    touch-action: manipulation;
+  }
+  .mpanel a:active { color: var(--accent); }
+  .mpanel a i { font-style: normal; font-family: var(--mono);
+    font-size: .72rem; color: var(--ink-3); }
+
+  /* 顶栏是固定的，正文要给它让出高度，否则首屏会被盖住 */
+  body { padding-top: calc(58px + env(safe-area-inset-top, 0px)); }
+  .cover { min-height: calc(100svh - 58px); }
+  /* 锚点跳转也要避开固定顶栏，否则章节标题会藏在顶栏下面 */
+  html { scroll-padding-top: calc(58px + env(safe-area-inset-top, 0px) + 14px); }
+}
+
+/* ── 排版基准 ─────────────────────────────────────────────────────── */
+.prose {
+  font-family: var(--serif);
+  font-size: clamp(1.02rem, 1.15vw, 1.12rem);
+  line-height: 1.95;
+  color: var(--ink-2);
+  max-width: 34em;
+}
+.prose + .prose { margin-top: 1.1em; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.prose em { font-style: normal; color: var(--accent); }
+
+.label {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+h3 {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1.5;
+}
+
+/* ── 栅格 ─────────────────────────────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0,1fr);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  gap: 0 clamp(22px, 3vw, 50px);
+}
+
+/* ══ 对齐脊线 ══════════════════════════════════════════════════════
+   一条纵向细线贯穿正文，条款编号挂在它右侧。
+   走到第二章（讲"两套体系对不齐"的那一章）时，这条线**变成虚线**
+   —— 整页的论点就这样变成了页面的结构：能对上的地方是实线，
+   对不上的地方是虚线。 */
+/* min-width:0 是网格子项的必要保险：不加的话长内容会把整列撑破 */
+.col { min-width: 0; }
+.doc { position: relative; padding-left: var(--spine); }
+.doc::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+  background: var(--line);
+}
+#s2 { position: relative; }
+#s2::before {
+  content: ''; position: absolute;
+  left: calc(-1 * var(--spine)); top: 0; bottom: 0; width: 1px;
+  /* 用纸色做间隔，把底下那条实线盖住，换成一截一截的短线 */
+  background: repeating-linear-gradient(180deg,
+    var(--line) 0 2px, var(--paper) 2px 10px);
+}
+
+/* ── 左侧导航轨 ───────────────────────────────────────────────────── */
+.rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 40px 0;
+}
+.rail ol { list-style: none; display: flex; flex-direction: column; gap: 2px; position: relative; }
+.rail ol::before {
+  content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 1px; background: var(--line-2);
+}
+.rail li { position: relative; }
+.rail a {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 44px;          /* 触屏最小点击高度，大屏 iPad 也会用到这条轨道 */
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--ink-3);
+  transition: color .3s var(--ease);
+}
+/* 常显数字，悬停才展开文字。
+   之前只有圆点、没有字，读者不知道自己在哪 —— 视觉审查直接点名了这条。 */
+.rail a i {
+  font-style: normal;
+  width: 31px; flex: none; text-align: center;
+  background: var(--paper);
+  position: relative; z-index: 1;
+  transition: color .3s var(--ease);
+}
+.rail a span {
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+/* 当前章：编号转深、加粗，标签也转深。
+   之前用强调色，被读成"突兀"；改成靠字重和深浅区分，安静但明确。 */
+.rail li.on a { color: var(--ink); }
+.rail li.on a i { color: var(--accent); font-weight: 700; }
+.rail li.on a span { color: var(--ink); font-weight: 500; }
+.rail a:hover { color: var(--ink); }
+
+@media (min-width: 1080px) {
+  .rail:hover a span, .rail a:focus-visible span { opacity: 1; transform: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* 悬停时加深，让这一列读起来是可点的导航而不是一排编号 */
+  .rail a:hover i { color: var(--ink); }
+  .rail a:hover span { color: var(--ink); }
+}
+
+/* 宽屏直接把章节名常显出来。
+   只留数字的话，一列光秃秃的 1-7 会被读成设计软件的辅助线，
+   而不是导航 —— 视觉审查两次都提到了这一点。 */
+@media (min-width: 1180px) {
+  :root { --rail: 178px; }
+  .rail a span { opacity: 1; transform: none; }
+}
+
+/* ── 封面 ─────────────────────────────────────────────────────────── */
+.cover {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 左边留出和正文一样的脊线宽度，这样封面和正文左边缘对齐 */
+  padding: clamp(80px, 12vh, 140px) 0 clamp(56px, 9vh, 100px) var(--spine);
+  border-bottom: 1px solid var(--line);
+}
+.cover .meta {
+  display: flex; flex-wrap: wrap; gap: 9px 20px;
+  padding-bottom: clamp(28px, 5vh, 56px);
+  margin-bottom: clamp(28px, 5vh, 56px);
+  border-bottom: 1px solid var(--line-2);
+}
+.cover .meta div { display: flex; gap: 10px; }
+.cover .meta b { font-weight: 500; color: var(--ink-2); font-family: var(--mono);
+  font-size: .72rem; letter-spacing: .06em; }
+
+.cover h1 {
+  font-size: clamp(1.75rem, 4.9vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -.035em;
+}
+.cover h1 .ln { display: block; overflow: hidden; }
+.cover h1 .ln > span {
+  display: block;
+  transform: translateY(105%);
+  animation: riseIn .95s var(--ease) forwards;
+}
+.cover h1 .ln:nth-child(2) > span { animation-delay: .11s; }
+@keyframes riseIn { to { transform: none; } }
+
+.cover .standfirst {
+  margin-top: clamp(30px, 5vh, 52px);
+  max-width: 30em;
+}
+.cover .standfirst p { opacity: 0; animation: fadeUp .9s var(--ease) .42s forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ── 封面上的两个体系：把论点在正文之前先摆出来 ──
+   右栏有意下移，两栏之间是一条纵向细线。看到的第一个画面
+   就是"两个体系对不齐"。 */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 clamp(18px, 3vw, 44px);
+  margin-top: clamp(34px, 6vh, 64px);
+  padding-top: clamp(22px, 4vh, 34px);
+  border-top: 1px solid var(--line);
+  opacity: 0;
+  animation: fadeUp .9s var(--ease) .72s forwards;
+}
+/* 补一句收束，否则两栏只挂两个短标签，下面一大片空，
+   会被读成"内容没写完"。 */
+.pair-note {
+  grid-column: 1 / -1;
+  margin-top: clamp(16px, 2.4vh, 24px);
+  font-family: var(--serif);
+  font-size: .95rem; line-height: 1.75; color: var(--ink-2);
+  max-width: 30em;
+}
+.pair .side { display: grid; gap: 6px; }
+/* ★ 撤销右栏下移。两轮视觉审查都把这个人造错位读成"没对齐、排版松散"。
+   两侧现在严格对齐，不对称感交给中间那条虚线来承担。 */
+.pair { padding-bottom: clamp(6px, 1.4vh, 14px); }
+/* 中间这条分隔用虚线，呼应正文里脊线在第二章断开的那一段。
+   原来两栏一个黑一个蓝，视觉审查指出那像是在表示"选中"，
+   和并排陈述的语义冲突 —— 改为同色，用线的形态表达"不对齐"。 */
+.pair .mid {
+  /* 虚线太淡会看不见，视觉审查提过。加深一档。 */
+  background: repeating-linear-gradient(180deg,
+    var(--ink-3) 0 3px, transparent 3px 8px);
+}
+.pair .k {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+  color: var(--ink-3);
+}
+.pair .v {
+  font-size: clamp(1.05rem, 1.5vw, 1.32rem);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+@media (max-width: 620px) {
+  /* 窄屏元数据会折成三行，行距要松一点才不闷 */
+  /* 三条元数据统一成竖排，避免"有的标签在上、有的并列"的杂乱 */
+  .cover .meta {
+    display: grid; gap: 10px;
+    padding-bottom: 22px; margin-bottom: 22px;
+    font-size: .9rem;
+  }
+  .cover .meta div { display: grid; gap: 3px; }
+  .cover .meta b { font-size: .66rem; }
+  /* 手机上行距略收，否则三行正文就吃掉半屏 */
+  .prose { line-height: 1.85; }
+  .pair { grid-template-columns: 1fr; gap: 0; }
+  .pair .mid { display: none; }
+  .pair .side:last-child {
+    transform: none; margin-top: 16px; padding-top: 16px;
+    /* 用虚线，和桌面版中间那条分割线是同一种语言 */
+    border-top: 1px dashed var(--ink-3);
+  }
+}
+
+/* 窄屏上左导航轨是隐藏的，读者会失去对文档结构的感知。
+   所以封面补一份章节索引，宽屏不显示（那时导航轨已经在旁边了）。 */
+.cover-index { display: none; }
+@media (max-width: 1079px) {
+  .cover-index {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(30px, 5vh, 48px);
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    animation: fadeUp .9s var(--ease) .6s forwards;
+  }
+  .cover-index a {
+    display: grid; grid-template-columns: 1.7rem 1fr;
+    gap: 12px; align-items: baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line-2);
+    text-decoration: none;
+    transition: color .3s var(--ease);
+  }
+  .cover-index a:active { color: var(--accent); }
+  /* 编号不要上强调色 —— 一排蓝色数字看起来像没做完的链接 */
+  .cover-index .n { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  .cover-index .t { font-size: .94rem; color: var(--ink); }
+}
+
+/* ── 章节 ─────────────────────────────────────────────────────────── */
+.sec {
+  padding: clamp(60px, 10vh, 118px) 0;
+  border-bottom: 1px solid var(--line-2);
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: clamp(20px, 3vh, 34px);
+}
+.sec:last-of-type { border-bottom: none; }
+
+.sec-head {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+.sec-no {
+  /* 编号挂在页边外侧，正文因此全部对齐到同一条左边缘
+     （之前编号占据正文里的第一列，把标题推右了 80px，
+      和封面标题对不齐） */
+  position: absolute;
+  right: calc(100% + clamp(10px, 1.4vw, 18px));
+  top: .34em;
+  font-family: var(--mono);
+  font-size: .8rem;
+  letter-spacing: .14em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* 进场：滚到了才升起来，出现一次就停 */
+.rv { opacity: 0; transform: translateY(18px);
+      transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+.block { display: grid; gap: 14px; }
+.block .lead { display: grid; gap: 7px; }
+
+/* 编号小节：编号同样挂到页边外侧，和一级编号共用一条编号列 */
+.sub { position: relative; }
+.sub .n {
+  position: absolute;
+  right: calc(100% + clamp(10px, 1.4vw, 17px));
+  top: .48em;
+  font-family: var(--mono); font-size: .78rem; letter-spacing: .08em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.sub h3 { margin-bottom: .75em; }
+
+/* ══ 错位对照图：这个课题的论点就是两套体系对不齐 ══ */
+.drift {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 clamp(16px, 3vw, 40px);
+  padding: clamp(26px, 4vh, 40px) 0;
+  position: relative;
+}
+.drift .axis {
+  background: var(--line-2);
+  position: relative;
+}
+/* 中轴上的断口：表示"没有对应关系" */
+.drift .axis::after {
+  content: ''; position: absolute;
+  left: -1px; right: -1px; top: 42%; height: 34%;
+  background: repeating-linear-gradient(180deg, var(--line) 0 1px, transparent 1px 7px);
+}
+.drift dl { display: grid; gap: 0; align-content: start; }
+.drift dt {
+  /* 组标题要压得住下面的条目。原来又小又淡，视觉层级是倒的。 */
+  font-family: var(--mono); font-size: .76rem; letter-spacing: .1em;
+  color: var(--ink-2); padding-bottom: 16px;
+}
+.drift dd {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: .96rem; color: var(--ink-2);
+  padding: 9px 0;
+  border-top: 1px solid var(--line-2);
+}
+/* 名字和维度标签之间的距离原来被 min-width:4.5em 撑得太开，
+   短名（朗姆、金酒）后面会空出一大段 */
+.drift dd b { font-weight: 500; color: var(--ink); min-width: 3.4em; }
+.drift dd i { font-style: normal; font-family: var(--mono);
+  font-size: .68rem; color: var(--ink-3); }
+/* 右栏整体下移 —— 而且这个错位是**滚到时才发生**的。
+   ★ 撤销：这条人工下移原本是想"让错位在你眼前发生"，
+     但两轮视觉审查都把它读成了"行没对齐 / 像内容没加载完"。
+     现在两侧的**行严格对齐**，靠"条数不同"本身来表达颗粒度差异，
+     并在右栏末尾标出清单到此为止 —— 让"短"看起来是有意的，不是坏了。 */
+
+/* "其他"这一格是白酒最可能的落点。原来给它上了强调色 + 强调边框，
+   视觉审查读成了"选中态 / 只写了一半的代码"。改成一句旁注：
+   文字保持正文色，把说明放在右侧，读起来是注解而不是状态。 */
+.drift dd.hit { border-top-color: var(--ink-3); }
+.drift dd.hit .hint {
+  /* 右对齐在通篇左对齐的版面里会显得孤立，改成单独一行、左对齐 */
+  flex-basis: 100%; margin-top: 5px;
+  font-family: var(--mono);
+  /* 用正文灰而不是强调色 —— 强调色在这页里承担链接和结论，
+     一条注释用蓝色会被当成可点的链接 */
+  font-size: .66rem; letter-spacing: .04em; color: var(--ink-2);
+}
+.drift dd.hit { flex-wrap: wrap; }
+.drift .end {
+  margin-top: 4px; padding-top: 11px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: .66rem;
+  letter-spacing: .06em; color: var(--ink-3);
+}
+.drift .gap {
+  grid-column: 1 / -1;
+  margin-top: clamp(18px, 3vh, 30px);
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .06em;
+  color: var(--ink-3);
+}
+
+/* ══ 四方向矩阵 ══ */
+.matrix { display: grid; border-top: 1px solid var(--line); }
+/* 表头。没有表头的"对照矩阵"读者得靠猜——补上，用等宽小字压在细线上方 */
+.mhead {
+  display: grid;
+  grid-template-columns: 5.4rem minmax(0,1fr) 8.5rem 5rem;
+  gap: clamp(14px, 2.5vw, 34px);
+  padding-bottom: 13px;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  color: var(--ink-3);
+}
+.mhead span:last-child { text-align: right; }
+.row {
+  display: grid;
+  grid-template-columns: 5.4rem minmax(0,1fr) 8.5rem 5rem;
+  gap: clamp(14px, 2.5vw, 34px);
+  align-items: baseline;
+  padding: clamp(18px, 2.6vh, 26px) 0;
+  border-bottom: 1px solid var(--line-2);
+  position: relative;
+  text-decoration: none;
+  transition: background .35s var(--ease);
+}
+.row .key {
+  font-family: var(--mono); font-size: .8rem; letter-spacing: .1em;
+  color: var(--ink-3);
+  transition: color .35s var(--ease);
+}
+.row .title { font-size: 1rem; font-weight: 500; color: var(--ink); }
+.row .title small { display: block; font-weight: 400; font-size: .9rem;
+  color: var(--ink-2); margin-top: 5px; line-height: 1.7;
+  font-family: var(--serif); }
+.row .out { font-family: var(--serif); font-size: .92rem; color: var(--ink-2); }
+.row .fit { display: flex; gap: 4px; justify-content: flex-end; }
+.row .fit i {
+  width: 7px; height: 7px; border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.row .fit i.f { background: var(--ink-3); box-shadow: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover { background: var(--accent-soft); }
+  .row:hover .key { color: var(--accent); }
+  .matrix:hover .row:not(:hover) { opacity: .5; }
+  .matrix .row { transition: background .35s var(--ease), opacity .35s var(--ease); }
+}
+.row .pin {
+  position: absolute; left: calc(-1 * clamp(10px, 2vw, 22px)); top: 50%;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--accent); transform: translateY(-50%) scale(0);
+  transition: transform .35s var(--ease);
+}
+.row.rec .pin { transform: translateY(-50%) scale(1); }
+
+/* ══ 三件事 / 三问 ══ */
+.list { display: grid; gap: 0; }
+.item {
+  display: grid; grid-template-columns: 3.2rem minmax(0,1fr);
+  gap: clamp(12px, 2.5vw, 30px);
+  padding: clamp(20px, 3vh, 30px) 0;
+  border-top: 1px solid var(--line-2);
+}
+.item:first-child { border-top: 1px solid var(--line); }
+.item .idx { font-family: var(--mono); font-size: .76rem;
+  letter-spacing: .1em; color: var(--ink-3); padding-top: .35em; }
+.item .body { display: grid; gap: 7px; }
+
+/* ══ 资料清单 ══ */
+.srcs { display: grid; }
+
+/* ══════════════════════════════════════════════════════════════════
+   交互对照器
+   第五节说"把静态对照表做成可交互的网页工具会更好用"——那就把
+   这句话直接做出来。它做的是**结构性对照**：让你看见两侧各自依据
+   的维度不同，而不是断言某个香型等于某个国际类别。
+   ══════════════════════════════════════════════════════════════════ */
+.viz {
+  margin-top: clamp(26px, 4vh, 42px);
+  background: var(--paper-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.viz-head {
+  display: grid; grid-template-columns: 1fr minmax(140px, 1.1fr) 1fr;
+  gap: 0;
+  padding: 13px clamp(12px, 2vw, 20px);
+  border-bottom: 1px solid var(--line-2);
+}
+.viz-head span {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .12em;
+  color: var(--ink-3);
+}
+.viz-head span:nth-child(2) { text-align: center; }
+.viz-head span:last-child { text-align: right; }
+
+/* 中间栏加宽：原来太窄，说明文字频繁折行显得杂乱 */
+.viz-body { display: grid; grid-template-columns: 1fr minmax(230px, 1.75fr) 1fr; }
+
+.opt {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  width: 100%; min-height: 44px;
+  padding: 10px clamp(12px, 2vw, 20px);
+  font-family: var(--sans); font-size: .93rem; text-align: left;
+  color: var(--ink-2); background: transparent;
+  border: none; border-bottom: 1px solid var(--line-2);
+  cursor: pointer;
+  transition: background .22s var(--ease), color .22s var(--ease);
+}
+.opt:last-child { border-bottom: none; }
+.opt em {
+  font-style: normal; font-family: var(--mono); font-size: .64rem;
+  letter-spacing: .06em; color: var(--ink-3); flex: none;
+  transition: color .22s var(--ease);
+}
+.opt[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.opt[aria-pressed="true"] em { color: var(--ink-2); }
+/* ★ 选中态去掉了左边那条深色竖条。
+   两轮视觉审查都指出：两侧同时出现相同的竖条，读起来像"这两个是对应的"，
+   而中间明明写着 ≠。竖条这个形状本身就在暗示连接。
+   现在只用底色 + 描边表示选中，不对应任何"连接"的含义。 */
+.opt[aria-pressed="true"] { box-shadow: inset 0 0 0 1px var(--ink-3); }
+.opt { position: relative; }
+
+@media (hover: hover) and (pointer: fine) {
+  .opt:hover { background: rgba(255,255,255,.55); color: var(--ink); }
+}
+@media (hover: none) { .opt:active { background: rgba(255,255,255,.7); } }
+
+.readout {
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  gap: 16px;
+  padding: clamp(20px, 3vh, 30px) clamp(14px, 2vw, 22px);
+  border-left: 1px solid var(--line-2);
+  border-right: 1px solid var(--line-2);
+  text-align: center;
+}
+/* 竖排：两个维度上下分列，中间的 ≠ 放大成主角。
+   横排时中间那列会上下各留一大块空白，视觉审查点名了这一点。 */
+.chips { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.chips b {
+  font-family: var(--mono); font-weight: 500; font-size: .72rem; letter-spacing: .06em;
+  padding: 5px 10px; border-radius: 999px;
+  background: var(--paper); box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink);
+}
+.chips i { font-style: normal; font-size: 1.15rem; line-height: 1; color: var(--accent); }
+.readout .say {
+  font-family: var(--serif); font-size: .9rem; line-height: 1.75;
+  color: var(--ink-2);
+  /* 两行以上的说明文字必须左对齐。居中会让每行的起止位置都不一样，
+     眼睛要不停找行首 —— 视觉审查把这条判为"典型排版错误"，判得对。 */
+  text-align: left;
+  max-width: 26em;
+}
+.src {
+  display: grid; grid-template-columns: 2.4rem minmax(0,1fr) auto;
+  gap: clamp(12px, 2vw, 26px);
+  align-items: baseline;
+  padding: 15px 0;
+  border-top: 1px solid var(--line-2);
+  text-decoration: none;
+}
+.src:first-child { border-top: 1px solid var(--line); }
+.src .idx { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+.src .t { font-size: .95rem; color: var(--ink); }
+.src .t small { display: block; color: var(--ink-3); font-family: var(--mono);
+  font-size: .7rem; letter-spacing: .04em; margin-top: 4px; }
+.src .go { font-family: var(--mono); font-size: .7rem; color: var(--ink-3);
+  transition: color .3s var(--ease), transform .3s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .src:hover .go { color: var(--accent); transform: translateX(3px); }
+}
+
+/* ── 页脚 ─────────────────────────────────────────────────────────── */
+footer {
+  padding: clamp(40px, 7vh, 72px) 0 clamp(48px, 8vh, 88px);
+  border-top: 1px solid var(--line);
+}
+footer .shell { align-items: baseline; }
+footer .note { font-family: var(--serif); font-size: .92rem; color: var(--ink-3);
+  max-width: 34em; line-height: 1.9; }
+
+/* ═══════════════ 窄屏 ═══════════════ */
+@media (max-width: 1079px) {
+  .rail { display: none; }
+  .shell { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 760px) {
+  /* 窄屏放不下一列编号 + 一条脊线，全部收回单列 */
+  :root { --spine: 0px; }
+  .doc::before, #s2::before { display: none; }
+  /* 页边放不下编号，收回到标题上方 */
+  .sec-no, .sub .n {
+    position: static; display: block;
+    right: auto; top: auto;
+    margin-bottom: 5px;
+  }
+  .sec-head { gap: 9px; }
+  .sub h3 { margin-bottom: .6em; }
+
+  .drift { grid-template-columns: 1fr; gap: 0; }
+  .drift .axis { display: none; }
+  .drift .intl {
+    margin-top: 26px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .row { grid-template-columns: 2.6rem minmax(0,1fr); gap: 10px 14px; }
+  .mhead { display: none; }     /* 卡片模式下表头没有意义 */
+  .row .key { grid-row: 1; }
+  .row .title { grid-column: 2; }
+  .row .out { grid-column: 2; color: var(--ink-3); font-size: .88rem; }
+  .row .out::before { content: '产出 · '; font-family: var(--mono); font-size: .68rem; }
+  .row .fit { grid-column: 2; justify-content: flex-start; }
+  .row .fit::before { content: '专业贴合度'; font-family: var(--mono);
+    font-size: .68rem; color: var(--ink-3); margin-right: 8px; }
+
+  .item, .src { grid-template-columns: 2.2rem minmax(0,1fr); }
+  .src .go { grid-column: 2; }
+
+  /* 对照器：三栏收成一列。顺序改成 左列 → 右列 → 结论，
+     否则结论会插在两个选择列表中间，读起来断掉。 */
+  .viz-head { display: none; }
+  .viz-body { grid-template-columns: 1fr; }
+  .viz-body > .side:first-child { order: 1; }
+  .viz-body > .side:last-child  { order: 2; }
+  .viz-body > .readout          { order: 3; }
+  .side { display: flex; flex-direction: column; }
+  .side::before {
+    content: attr(data-label);
+    padding: 12px clamp(12px, 2vw, 20px) 8px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .12em;
+    color: var(--ink-3);
+  }
+  .side:last-child { border-top: 1px solid var(--line-2); }
+  .readout {
+    border: none;
+    border-top: 1px solid var(--line-2);
+  }
+}
+@media (max-width: 480px) {
+  .cover h1 { font-size: 1.55rem; }
+}
+
+/* 触屏设备：把按下的反馈做足，因为浏览器默认的高亮被去掉了 */
+@media (hover: none) {
+  .row:active { background: var(--accent-soft); }
+  .src:active .t { color: var(--accent); }
+}
+a, button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+
+/* ═══════════════ 系统里关了动效就全关 ═══════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .cover h1 .ln > span { transform: none; }
+  .cover .standfirst p { opacity: 1; }
+  .rv { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#s1">跳到正文</a>
+
+<!-- 窄屏顶栏与目录（宽屏隐藏，那时用左侧导航轨） -->
+<header class="mbar">
+  <a class="mt" href="#cover">本土白酒分类课题</a>
+  <button class="mtoc" type="button" id="mtocBtn" aria-expanded="false" aria-controls="mtocPanel">目录</button>
+</header>
+<nav class="mpanel" id="mtocPanel" aria-label="章节目录">
+  <a href="#s1"><i>1</i>题目在问什么</a>
+  <a href="#s2"><i>2</i>主要难点：三层错位</a>
+  <a href="#s3"><i>3</i>四个可行的研究方向</a>
+  <a href="#s4"><i>4</i>建议的执行顺序</a>
+  <a href="#s5"><i>5</i>一个加分点</a>
+  <a href="#s6"><i>6</i>建议优先查证的资料</a>
+</nav>
+
+<div class="shell">
+
+  <!-- ══ 左导航轨：章节编号，可点击跳转 ══ -->
+  <aside class="rail" aria-label="章节导航">
+    <ol>
+      <!-- 编号用阿拉伯数字，不用中文数字。
+           等宽字体里的「一」就是一根横线、「二」是两根、「三」是三根，
+           放在导航里完全不像数字，像图形符号。 -->
+      <li data-to="s1"><a href="#s1"><i>1</i><span>题目在问什么</span></a></li>
+      <li data-to="s2"><a href="#s2"><i>2</i><span>主要难点：三层错位</span></a></li>
+      <li data-to="s3"><a href="#s3"><i>3</i><span>四个可行的研究方向</span></a></li>
+      <li data-to="s4"><a href="#s4"><i>4</i><span>建议的执行顺序</span></a></li>
+      <li data-to="s5"><a href="#s5"><i>5</i><span>一个加分点</span></a></li>
+      <li data-to="s6"><a href="#s6"><i>6</i><span>建议优先查证的资料</span></a></li>
+    </ol>
+  </aside>
+
+  <div class="col">
+
+    <!-- ═══════════ 封面 ═══════════ -->
+    <header class="cover" id="cover">
+      <div class="meta">
+        <div><b>提交人</b><span>廖艺茗</span></div>
+        <div><b>课题</b><span>本土白酒分类规范化与国际对接</span></div>
+        <div><b>类型</b><span>课程课题 · 方向分析</span></div>
+        <div><b>学科</b><span>食品质量与安全</span></div>
+      </div>
+
+      <h1>
+        <!-- 换行位置：「与」这类介词在中文排版里不能出现在行首（避头尾），
+             所以把它留在第一行末尾，而不是让它领起第二行。 -->
+        <span class="ln"><span>本土白酒分类规范化与</span></span>
+        <span class="ln"><span>国际对接的课题方向分析</span></span>
+      </h1>
+
+      <div class="standfirst prose">
+        <p>这个课题的入口不在风味分类本身，而在法规与标准文本的对照。先做现状梳理，再谈规范与对接，路径会顺很多。</p>
+      </div>
+
+      <!-- 封面先把两个体系摆出来：右栏有意下移，中间一条细线 -->
+      <div class="pair" aria-hidden="true">
+        <div class="side">
+          <span class="k">中国白酒</span>
+          <span class="v">按香型与工艺分类</span>
+        </div>
+        <div class="mid"></div>
+        <div class="side">
+          <span class="k">国际烈酒</span>
+          <span class="v">按原料与法定条件分类</span>
+        </div>
+        <p class="pair-note">这两套分类逻辑对不齐，就是整个课题要处理的事。</p>
+      </div>
+
+      <nav class="cover-index" aria-label="章节索引">
+        <a href="#s1"><span class="n">1</span><span class="t">题目在问什么</span></a>
+        <a href="#s2"><span class="n">2</span><span class="t">主要难点：三层错位</span></a>
+        <a href="#s3"><span class="n">3</span><span class="t">四个可行的研究方向</span></a>
+        <a href="#s4"><span class="n">4</span><span class="t">建议的执行顺序</span></a>
+        <a href="#s5"><span class="n">5</span><span class="t">一个加分点</span></a>
+        <a href="#s6"><span class="n">6</span><span class="t">建议优先查证的资料</span></a>
+      </nav>
+    </header>
+
+    <main class="doc">
+
+    <!-- ═══════════ 一 ═══════════ -->
+    <section class="sec" id="s1">
+      <div class="sec-head rv">
+        <span class="sec-no">1</span>
+        <h2>题目在问什么</h2>
+      </div>
+      <div class="block rv">
+        <p class="prose">这个题目可以拆成两件事。第一件是<strong>规范化本土分类</strong>：把中国白酒内部的分类方式整理成一套清楚、可执行的体系。第二件是<strong>接入国际</strong>：让这套体系能被国际法规、贸易体系和消费者读懂并接受。</p>
+        <p class="prose">两件事合起来看，它本质上是一个对接问题。中国白酒已经有一套成熟的内部分类方式，这套方式对国内从业者和消费者来说是常识；国际烈酒体系则运行在另一套分类逻辑上。课题要做的，是找出这两套逻辑之间的对应关系，以及对接需要补齐哪些条件。</p>
+        <p class="prose">因此这个课题的产出应该是<em>可用的对照关系</em>和明确的条件清单，不是感想，也不是对中国白酒文化价值的介绍。</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ 二 ═══════════ -->
+    <section class="sec" id="s2">
+      <div class="sec-head rv">
+        <span class="sec-no">2</span>
+        <h2>主要难点：三层错位</h2>
+      </div>
+
+      <div class="block rv">
+        <div class="sub">
+          <span class="n">2.1</span>
+          <h3>分类的主轴不同</h3>
+          <p class="prose">中国白酒分类的主轴是工艺与风味：香型区分（酱香、浓香、清香、米香、凤香等）与工艺区分（固态法、液态法、固液法）构成两套并行的描述方式。</p>
+          <p class="prose">国际烈酒分类的主轴是原料、产地与法定工艺条件。以欧盟烈酒法规为例，它用一份封闭的类别清单来管理名称：朗姆的原料限定为甘蔗汁或糖蜜，威士忌限定为谷物并须经橡木桶陈酿，伏特加须处理至接近中性。清单之外的产品不能使用清单内的名称。</p>
+          <p class="prose">白酒放入任何一个现成类别都不合适：原料不是水果，所以不是白兰地；发酵与蒸馏方式决定了它不是中性酒精，所以不是伏特加；原料不是甘蔗，所以不是朗姆。结果它通常落在其他烈酒这一格，而其他意味着既没有专门的名称保护，也没有专门的技术定义。</p>
+        </div>
+
+        <!-- 把"对不齐"这件事直接画出来 -->
+        <div class="drift" role="img"
+             aria-label="中国白酒分类体系与国际烈酒分类体系对照：两侧条目无法逐条对应，中间存在断口。">
+          <dl>
+            <dt>中国白酒体系</dt>
+            <dd><b>酱香</b><i>风味</i></dd>
+            <dd><b>浓香</b><i>风味</i></dd>
+            <dd><b>清香</b><i>风味</i></dd>
+            <dd><b>米香</b><i>风味</i></dd>
+            <dd><b>凤香</b><i>风味</i></dd>
+            <dd><b>兼香</b><i>风味</i></dd>
+            <dd><b>固态法</b><i>工艺</i></dd>
+            <dd><b>液态法</b><i>工艺</i></dd>
+          </dl>
+          <div class="axis" aria-hidden="true"></div>
+          <div class="intl">
+            <dl>
+              <dt>国际烈酒体系</dt>
+              <dd><b>朗姆</b><i>原料</i></dd>
+              <dd><b>威士忌</b><i>原料 + 陈酿</i></dd>
+              <dd><b>伏特加</b><i>工艺</i></dd>
+              <dd><b>白兰地</b><i>原料</i></dd>
+              <dd><b>金酒</b><i>风味添加</i></dd>
+              <dd class="hit"><b>其他</b><i>兜底格</i><span class="hint">白酒通常落在这里</span></dd>
+            </dl>
+            <p class="end">国际类别清单是封闭的，到此为止。不在清单上的，只能落到「其他」。</p>
+          </div>
+          <p class="gap">两侧不是一一对应关系。中文栏按风味与工艺分，国际栏按原料与法定条件分，维度本身不同，所以无法逐条映射。</p>
+        </div>
+      </div>
+
+      <div class="block rv">
+        <div class="sub">
+          <span class="n">2.2</span>
+          <h3>一个排他，一个不排他</h3>
+          <p class="prose">国际体系里，一个名称对应一套硬性工艺条件，是<strong>排他</strong>的：不满足条件就不能使用这个名称。中国白酒的香型则更接近风味描述加工艺倾向，<strong>并不排他</strong>：同一家企业可以同时生产酱香和浓香产品，兼香这一名称本身就承认了兼。</p>
+          <p class="prose">两套体系提出的问题也不一样。国际体系问的是能不能叫这个名字，中国体系问的是这酒喝起来像什么。这决定了对接工作不能只做名称翻译，还要建立名称与工艺条件之间的对应。</p>
+        </div>
+      </div>
+
+      <div class="block rv">
+        <div class="sub">
+          <span class="n">2.3</span>
+          <h3>定义权分散在多个主体</h3>
+          <p class="prose">国内层面，分类定义由国家标准与行业标准体系承担，产区保护由地理标志制度承担。国际层面，涉及国际标准化组织、食品法典委员会、各国法规以及海关税则。任何一个单点努力都不足以完成对接。</p>
+          <p class="prose">中国已经推进过两件重要的事：确定白酒的官方英文名为 Chinese Baijiu，以及在 2021 年修订的《白酒工业术语》和《饮料酒术语和分类》中收紧了白酒的定义，要求以粮谷为原料并采用固态法工艺。这两件事分别解决命名和定义内部一致性的问题。</p>
+          <p class="prose">需要注意的是，改英文名和进入国际分类体系是两件不同的事。前者解决怎么称呼，后者需要一套国际同行愿意接受的技术定义，包括原料范围、工艺步骤、特征成分指标。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ 三 ═══════════ -->
+    <section class="sec" id="s3">
+      <div class="sec-head rv">
+        <span class="sec-no">3</span>
+        <h2>四个可行的研究方向</h2>
+        <p class="prose">按上手难度排列，最后一个与食品质量与安全专业的贴合度最高。带记号的一条是建议先做的。</p>
+      </div>
+
+      <div class="matrix rv">
+        <div class="mhead" aria-hidden="true">
+          <span>方向</span><span>核心要回答的问题</span><span>产出物</span><span>专业贴合度</span>
+        </div>
+        <a class="row" href="#s4">
+          <span class="key">A</span>
+          <span class="title">香型与国际分类维度对照
+            <small>各香型的原料、发酵与蒸馏方式，与国际类别差在哪</small></span>
+          <span class="out">维度对照矩阵</span>
+          <span class="fit" aria-label="专业贴合度 1 / 3"><i class="f"></i><i></i><i></i></span>
+        </a>
+        <a class="row rec" href="#s4">
+          <span class="pin" aria-hidden="true"></span>
+          <span class="key">B</span>
+          <span class="title">白酒在国际法规中的现状地图
+            <small>各国法规与海关税则中，白酒目前归入哪一类</small></span>
+          <span class="out">现状对照表</span>
+          <span class="fit" aria-label="专业贴合度 2 / 3"><i class="f"></i><i class="f"></i><i></i></span>
+        </a>
+        <a class="row" href="#s4">
+          <span class="key">C</span>
+          <span class="title">两版国标定义文本对比
+            <small>2021 版对白酒的定义改了什么，影响哪些产品</small></span>
+          <span class="out">对比加影响分析</span>
+          <span class="fit" aria-label="专业贴合度 2 / 3"><i class="f"></i><i class="f"></i><i></i></span>
+        </a>
+        <a class="row" href="#s4">
+          <span class="key">D</span>
+          <span class="title">分类差异对检测指标的影响
+            <small>分类不同如何影响适用限量，如何形成技术壁垒</small></span>
+          <span class="out">指标对照表</span>
+          <span class="fit" aria-label="专业贴合度 3 / 3"><i class="f"></i><i class="f"></i><i class="f"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══════════ 四 ═══════════ -->
+    <section class="sec" id="s4">
+      <div class="sec-head rv">
+        <span class="sec-no">4</span>
+        <h2>建议的执行顺序</h2>
+      </div>
+      <div class="block rv">
+        <p class="prose">建议<em>先做方向 B</em>，再回到方向 C，最后按剩余精力决定做 A 还是 D。</p>
+        <p class="prose">先做 B 的理由有三条。它是其他三个方向的地基，不清楚现状如何归类就谈不上接入；它的结论是硬事实而不是观点，因此可以被核对和引用；它依赖公开的法规文本与税则，不需要实验室或仪器。</p>
+        <p class="prose">有了 B 的骨架之后，C 和 D 的工作就变成往骨架里填内容，而不是从零开始。如果时间只够做一件事，把 B 做扎实，已经足够构成一份完整的作业。</p>
+        <p class="prose">有一类问题建议不要碰：香型究竟应该分成几种。这属于行业组织的议题，不是学生课题可以给出结论的范围，花时间在这上面容易做成无解的争论。</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ 五 ═══════════ -->
+    <section class="sec" id="s5">
+      <div class="sec-head rv">
+        <span class="sec-no">5</span>
+        <h2>容易被忽略的一个加分点</h2>
+      </div>
+      <div class="block rv">
+        <p class="prose">这类课题最常见的成果形态是一张塞在 PDF 里的静态对照表，缺点是除了作者本人，其他人很难读进去。而分类对照天然适合做成可交互的形式：选择某一个香型，同时看到它在国际分类体系中的对应位置和差异项。</p>
+        <p class="prose">把对照关系做成网页工具，会比提交表格更容易读进去，也更容易被当作示例使用。</p>
+        <p class="prose">下面这个就是那个工具做出来的样子，<em>可以直接点</em>。</p>
+      </div>
+
+      <div class="viz rv" id="viz">
+        <div class="viz-head" aria-hidden="true">
+          <span>中国白酒体系</span>
+          <span>两侧依据的维度</span>
+          <span>国际烈酒体系</span>
+        </div>
+        <div class="viz-body">
+
+          <div class="side" data-label="中国白酒体系" role="group"
+               aria-label="选择中国白酒的香型或工艺">
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，回答的是这酒喝起来像什么" aria-pressed="false">酱香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，回答的是这酒喝起来像什么" aria-pressed="false">浓香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，回答的是这酒喝起来像什么" aria-pressed="false">清香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，回答的是这酒喝起来像什么" aria-pressed="false">米香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，回答的是这酒喝起来像什么" aria-pressed="false">凤香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="风味"
+                    data-note="以风味命名，且并不排他，同一家企业可以同时生产多种香型" aria-pressed="false">兼香<em>风味</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="发酵工艺"
+                    data-note="描述生产方式，即用什么方式完成发酵" aria-pressed="false">固态法<em>发酵工艺</em></button>
+            <button class="opt" type="button" data-side="cn" data-dim="发酵工艺"
+                    data-note="描述生产方式，即用什么方式完成发酵" aria-pressed="false">液态法<em>发酵工艺</em></button>
+          </div>
+
+          <div class="readout" aria-live="polite">
+            <div class="chips"><b>—</b><i>≠</i><b>—</b></div>
+            <p class="say">两侧各选一项，看看它们依据的是不是同一个维度。</p>
+          </div>
+
+          <div class="side" data-label="国际烈酒体系" role="group"
+               aria-label="选择国际烈酒的类别">
+            <button class="opt" type="button" data-side="intl" data-dim="原料"
+                    data-note="规定必须用什么原料，朗姆限定为甘蔗汁或糖蜜" aria-pressed="false">朗姆<em>原料</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="原料"
+                    data-note="规定必须用什么原料，威士忌限定为谷物并须经橡木桶陈酿" aria-pressed="false">威士忌<em>原料</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="法定工序"
+                    data-note="规定必须做到什么程度，伏特加须处理至接近中性" aria-pressed="false">伏特加<em>法定工序</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="原料"
+                    data-note="规定必须用什么原料，白兰地限定为水果原料" aria-pressed="false">白兰地<em>原料</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="风味添加"
+                    data-note="规定以什么植物风味为准，金酒以杜松子为代表" aria-pressed="false">金酒<em>风味添加</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="原料"
+                    data-note="规定必须用什么原料，龙舌兰限定为龙舌兰属植物" aria-pressed="false">龙舌兰<em>原料</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="原料"
+                    data-note="规定必须用什么原料，果渣酒限定为葡萄发酵后剩下的皮渣" aria-pressed="false">果渣酒<em>原料</em></button>
+            <button class="opt" type="button" data-side="intl" data-dim="兜底"
+                    data-note="国际类别清单里的兜底位置" aria-pressed="false">其他<em>兜底格</em></button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ 六 ═══════════ -->
+    <section class="sec" id="s6">
+      <div class="sec-head rv">
+        <span class="sec-no">6</span>
+        <h2>建议优先查证的资料</h2>
+        <p class="prose">以下五份文件分别对应国内标准、欧盟法规、美国监管、海关归类和行业背景，是支撑方向 B 与方向 C 的主要依据。建议直接查官方原文，不要以二手文章为准。</p>
+      </div>
+      <div class="srcs rv">
+        <div class="src">
+          <span class="idx">01</span>
+          <span class="t">GB/T 15109-2021《白酒工业术语》<small>同时查 GB/T 17204-2021《饮料酒术语和分类》</small></span>
+          <span class="go">国家标准全文公开系统</span>
+        </div>
+        <div class="src">
+          <span class="idx">02</span>
+          <span class="t">欧盟烈酒法规 2019/787<small>其附件一是烈酒类别清单</small></span>
+          <span class="go">欧盟法律数据库</span>
+        </div>
+        <div class="src">
+          <span class="idx">03</span>
+          <span class="t">美国烟酒税收与贸易局<small>烈酒标准定义，用于对照另一套主流监管口径</small></span>
+          <span class="go">TTB 公开文件</span>
+        </div>
+        <div class="src">
+          <span class="idx">04</span>
+          <span class="t">海关进出口税则第二十二章<small>世界海关组织协调制度第 2208 项</small></span>
+          <span class="go">用于确认报关归类</span>
+        </div>
+        <div class="src">
+          <span class="idx">05</span>
+          <span class="t">中国酒业协会<small>全国白酒标准化技术委员会的公开材料</small></span>
+          <span class="go">国内标准修订背景</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="shell" style="padding:0">
+        <div></div>
+        <p class="note">上述文件的具体条款与最新版本请以官方发布为准，引用时建议同时记录版本号与生效日期。</p>
+      </div>
+    </footer>
+
+    </main>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 进场：滚到了才升起来，出现一次就断开 */
+  /* .drift 也要观察：它的错位是进入视口后才错开的 */
+  var items = document.querySelectorAll('.rv, .drift');
+  if (reduce) {
+    items.forEach(function (el) { el.classList.add('on'); });
+  } else {
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('on');
+        obs.unobserve(en.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(function (el, i) {
+      el.style.transitionDelay = (i % 2) * 90 + 'ms';
+      io.observe(el);
+    });
+  }
+
+  /* 左导航轨：当前章节高亮。用中线判定，任何长度的章节都不会漏 */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.rail li'));
+  var targets = links.map(function (li) { return document.getElementById(li.dataset.to); });
+  if (targets.length && 'IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var i = targets.indexOf(en.target);
+        if (i < 0) return;
+        links.forEach(function (li, j) { li.classList.toggle('on', i === j); });
+      });
+    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+    targets.forEach(function (t) { if (t) spy.observe(t); });
+  }
+
+  /* ── 交互对照器 ──
+     做的是结构性对照：让你看见两侧依据的维度不同。
+     它不断言"某香型等于某国际类别"——那种逐条对应关系正是这个
+     课题要去建立的东西，不是现在已经有的结论。 */
+  var viz = document.getElementById('viz');
+  if (viz) {
+    var opts = Array.prototype.slice.call(viz.querySelectorAll('.opt'));
+    var chips = viz.querySelector('.chips');
+    var say = viz.querySelector('.say');
+    var sel = { cn: null, intl: null };
+
+    function render() {
+      var a = sel.cn && sel.cn.dataset;
+      var b = sel.intl && sel.intl.dataset;
+
+      if (!a || !b) {
+        chips.innerHTML = '<b>' + (a ? a.dim : '—') + '</b><i>≠</i><b>'
+                        + (b ? b.dim : '—') + '</b>';
+        say.textContent = '两侧各选一项，看看它们依据的是不是同一个维度。';
+        return;
+      }
+
+      chips.innerHTML = '<b>' + a.dim + '</b><i>≠</i><b>' + b.dim + '</b>';
+
+      var why;
+      if (a.dim === '兜底' || b.dim === '兜底') {
+        why = '「其他」是兜底格，不对应任何维度。白酒通常就落在这一格，'
+            + '这意味着它既没有专门的名称保护，也没有专门的技术定义。';
+      } else if (a.dim === '发酵工艺' && b.dim === '法定工序') {
+        why = '两侧都在讲工艺，但性质不同：一侧描述怎么生产，'
+            + '另一侧是法定准入条件，规定必须做到什么程度。';
+      } else {
+        why = '一侧按「' + a.dim + '」分，另一侧按「' + b.dim + '」定。'
+            + '维度类型不同，无法逐条对应——这正是这个课题要处理的问题。';
+      }
+      say.textContent = '左侧：' + a.note + '。右侧：' + b.note + '。' + why;
+    }
+
+    opts.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var side = btn.dataset.side;
+        sel[side] = (sel[side] === btn) ? null : btn;   /* 再点一次取消 */
+        opts.forEach(function (o) {
+          o.setAttribute('aria-pressed', sel[o.dataset.side] === o ? 'true' : 'false');
+        });
+        render();
+      });
+    });
+  }
+
+  /* ── 窄屏目录开合 ── */
+  var mtocBtn = document.getElementById('mtocBtn');
+  var mtocPanel = document.getElementById('mtocPanel');
+  if (mtocBtn && mtocPanel) {
+    var setToc = function (open) {
+      mtocPanel.classList.toggle('open', open);
+      mtocBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mtocBtn.textContent = open ? '收起' : '目录';
+    };
+    mtocBtn.addEventListener('click', function () {
+      setToc(!mtocPanel.classList.contains('open'));
+    });
+    /* 点了某一章就收起来，并让浏览器按锚点滚动 */
+    mtocPanel.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setToc(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setToc(false);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

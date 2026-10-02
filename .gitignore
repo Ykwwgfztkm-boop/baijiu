@@ -1,0 +1,5 @@
+# 只发布页面本身
+*
+!.gitignore
+!index.html
+!README.md
