@@ -697,28 +697,33 @@ h3 {
   max-width: 26em;
 }
 .src {
-  display: grid; grid-template-columns: 2.4rem minmax(0,1fr) auto;
+  display: grid; grid-template-columns: 2.4rem minmax(0,1fr);
   gap: clamp(12px, 2vw, 26px);
   align-items: baseline;
-  padding: 15px 0;
+  padding: 16px 0;
   border-top: 1px solid var(--line-2);
   text-decoration: none;
 }
 .src:first-child { border-top: 1px solid var(--line); }
 .src .idx { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+.src .body { display: grid; gap: 5px; }
 .src .t { font-size: .95rem; color: var(--ink); }
-.src .t small { display: block; color: var(--ink-3); font-family: var(--mono);
-  font-size: .7rem; letter-spacing: .04em; margin-top: 4px; }
+.src .n { font-family: var(--mono); font-size: .7rem;
+  letter-spacing: .04em; color: var(--ink-3); }
+/* 链接必须一眼看出能点：强调色 + 外链箭头。
+   之前是灰色无下划线，视觉审查直接说"完全不像可点击的链接"。 */
 .src .go {
-  font-family: var(--mono); font-size: .7rem; color: var(--ink-3);
-  text-align: right; line-height: 1.5;
-  transition: color .3s var(--ease), transform .3s var(--ease);
+  font-family: var(--mono); font-size: .73rem; color: var(--accent);
+  margin-top: 2px;
+  transition: color .3s var(--ease);
 }
-.src .go small {
-  display: block; font-size: .66rem; color: var(--ink-3); opacity: .75;
+.src .go i { font-style: normal; }
+.src .go em {
+  font-style: normal; color: var(--ink-3); margin-left: 10px;
 }
 @media (hover: hover) and (pointer: fine) {
-  .src:hover .go { color: var(--accent); transform: translateX(3px); }
+  .src:hover .go { color: #172fb8; }
+  .src:hover .t { color: var(--accent); }
 }
 
 /* ── 页脚 ─────────────────────────────────────────────────────────── */
@@ -766,7 +771,6 @@ footer .note { font-family: var(--serif); font-size: .92rem; color: var(--ink-3)
     font-size: .68rem; color: var(--ink-3); margin-right: 8px; }
 
   .item, .src { grid-template-columns: 2.2rem minmax(0,1fr); }
-  .src .go { grid-column: 2; text-align: left; }
 
   /* 对照器：三栏收成一列。顺序改成 左列 → 右列 → 结论，
      否则结论会插在两个选择列表中间，读起来断掉。 */
@@ -1113,30 +1117,47 @@ a, button { touch-action: manipulation; -webkit-user-select: none; user-select: 
       <div class="srcs rv">
         <a class="src" href="https://openstd.samr.gov.cn/bzgk/gb/" target="_blank" rel="noopener">
           <span class="idx">01</span>
-          <span class="t">GB/T 15109-2021《白酒工业术语》<small>同时查 GB/T 17204-2021《饮料酒术语和分类》</small></span>
-          <span class="go">国家标准全文公开系统<small>openstd.samr.gov.cn</small></span>
+          <span class="body">
+            <span class="t">GB/T 15109-2021《白酒工业术语》</span>
+            <span class="n">同时查 GB/T 17204-2021《饮料酒术语和分类》</span>
+            <span class="go">国家标准全文公开系统 <i>↗</i> <em>openstd.samr.gov.cn</em></span>
+          </span>
         </a>
         <a class="src" href="https://eur-lex.europa.eu/eli/reg/2019/787/oj" target="_blank" rel="noopener">
           <span class="idx">02</span>
-          <span class="t">欧盟烈酒法规 2019/787<small>其附件一是烈酒类别清单</small></span>
-          <span class="go">EUR-Lex 欧盟法律数据库<small>eur-lex.europa.eu</small></span>
+          <span class="body">
+            <span class="t">欧盟烈酒法规 2019/787</span>
+            <span class="n">其附件一是烈酒类别清单，可用于确认国际类别的排他性</span>
+            <span class="go">EUR-Lex 欧盟法律数据库 <i>↗</i> <em>eur-lex.europa.eu</em></span>
+          </span>
         </a>
         <a class="src" href="https://www.ecfr.gov/current/title-27/section-5.22" target="_blank" rel="noopener">
           <span class="idx">03</span>
-          <span class="t">美国烟酒税收与贸易局<small>烈酒标准定义，用于对照另一套主流监管口径</small></span>
-          <span class="go">27 CFR 5.22 标准定义原文<small>ecfr.gov</small></span>
+          <span class="body">
+            <span class="t">美国烟酒税收与贸易局</span>
+            <span class="n">烈酒标准定义，用于对照另一套主流监管口径</span>
+            <span class="go">eCFR 27 CFR 5.22 <i>↗</i> <em>www.ecfr.gov</em></span>
+          </span>
         </a>
         <a class="src" href="https://www.wcotradetools.org/en/harmonized-system" target="_blank" rel="noopener">
           <span class="idx">04</span>
-          <span class="t">海关进出口税则第二十二章<small>世界海关组织协调制度第 2208 项</small></span>
-          <span class="go">WCO 协调制度<small>wcotradetools.org</small></span>
+          <span class="body">
+            <span class="t">海关进出口税则第二十二章</span>
+            <span class="n">世界海关组织协调制度第 2208 项，用于确认报关归类</span>
+            <span class="go">WCO 协调制度 <i>↗</i> <em>www.wcotradetools.org</em></span>
+          </span>
         </a>
         <a class="src" href="https://www.cada.cc/" target="_blank" rel="noopener">
           <span class="idx">05</span>
-          <span class="t">中国酒业协会<small>全国白酒标准化技术委员会的公开材料</small></span>
-          <span class="go">中国酒业协会官网<small>cada.cc</small></span>
+          <span class="body">
+            <span class="t">中国酒业协会</span>
+            <span class="n">全国白酒标准化技术委员会的公开材料，用于了解国内标准修订背景</span>
+            <span class="go">中国酒业协会官网 <i>↗</i> <em>www.cada.cc</em></span>
+          </span>
         </a>
       </div>
+
+      <p class="prose rv">上述文件的具体条款与最新版本请以官方发布为准，引用时建议同时记录版本号与生效日期。</p>
     </section>
 
     <footer>
